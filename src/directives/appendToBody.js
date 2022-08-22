@@ -1,9 +1,9 @@
 export default {
-  inserted (el, bindings, {context}) {
-    if (context.appendToBody) {
-      const {height, top, left, width, right} = context.$refs.toggle.getBoundingClientRect();
+  mounted(el, { instance }) {
+    if (instance.appendToBody) {
+      const { height, top, left, width, right } = instance.$refs.toggle.getBoundingClientRect();
 
-      el.unbindPosition = context.calculatePosition(el, context, {
+      el.unbindPosition = instance.calculatePosition(el, instance, {
         width: width,
         top: (window.scrollY + top + height),
         left: (window.scrollX + left),
@@ -12,12 +12,12 @@ export default {
 
       document.body.appendChild(el);
     } else {
-      context.$el.appendChild(el)
+      instance.$el.appendChild(el);
     }
   },
 
-  unbind (el, bindings, {context}) {
-    if (context.appendToBody) {
+  unmounted(el, { instance }) {
+    if (instance.appendToBody) {
       if (el.unbindPosition && typeof el.unbindPosition === 'function') {
         el.unbindPosition();
       }
